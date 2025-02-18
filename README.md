@@ -10,6 +10,7 @@ This project is a submission for the [GovTech's Fullstack developer assignment](
 - [Installation](#installation)
   - [Run the App](#run-the-app)
   - [Run Unit Tests](#run-unit-tests)
+  - [Swagger Documentation](#swagger-documentation)
 - [About the Project](#about-the-project)
   - [Models](#models)
   - [Design choices](#design-choices)
@@ -98,7 +99,7 @@ docker-compose up --build
 ```
 
 This will setup:
-- A MySQL server in a container
+- A MySQL server in a container with a mounted volume for persistent storage
 - Seed the database with initial data (`./seed.sql`)
 - Setup a NodeJS environment and the API server in another container
 - Run the server to listen on port 3000
@@ -126,12 +127,21 @@ show tables;
 select * from students;
 ```
 
+#### 4. Delete the containers
+Delete the containers and clean out the volume by running
+```
+docker-compose down -v
+```
+
 ### Run Unit Tests
 Similarly, open another interactive shell session inside the api server container and execute the test runner
 
 ```bash
 docker exec -it api_server npm run test
 ```
+
+### Swagger Documentation 
+After setting up the server container, go to [/api](http://localhost:3000/api/) to view the Swagger documentation.
 
 ## About the Project
 
