@@ -99,6 +99,7 @@ docker-compose up --build
 ```
 
 This will setup:
+
 - A MySQL server in a container with a mounted volume for persistent storage
 - Seed the database with initial data (`./seed.sql`)
 - Setup a NodeJS environment and the API server in another container
@@ -113,35 +114,47 @@ http://localhost:3000
 ```
 
 #### 3. Interact with the database
+
 First, open an interactive shell session inside the MySQL container
+
 ```
 docker exec -it mysqldb sh
 ```
+
 To access MySQL's shell, use the credentials and port listed in `.env`
+
 ```
 mysql -h 127.0.0.1 -P 3306 -u root -ppassword school
 ```
+
 Once in the shell, you can query the database (default db name is 'school')
+
 ```
 show tables;
 select * from students;
 ```
 
 #### 4. Delete the containers
+
 Delete the containers and clean out the volume by running
+
 ```
 docker-compose down -v
 ```
 
 ### Run Unit Tests
+
 Similarly, open another interactive shell session inside the api server container and execute the test runner
 
 ```bash
 docker exec -it api_server npm run test
 ```
 
-### Swagger Documentation 
+### Swagger Documentation
+
 After setting up the server container, go to [/api](http://localhost:3000/api/) to view the Swagger documentation.
+
+![swagger document](./docs/swagger_document.png)
 
 ## About the Project
 
@@ -149,12 +162,18 @@ The project is built around 2 data models `Student` and `Teacher` represented by
 
 ### Models
 
+We delegate management of the tables to TypeORM, including the creation and handling of the bridge table TeacherStudent. The underlying database has following structure:
+
+![ER diagram](./docs/ER_diagram.png)
+
+(timestamp fields are also created and managed by TypeORM)
+
 #### The Teacher Model
 
 Represents the teachers in the system, manages multiple student entities.
 
 - email: the primary key that uniquely identifies a teacher
-- students: a list of student entities that the teacher manages
+- students: a relation field representing a list of student entities that the teacher manages
 
 #### The Student Model
 
@@ -162,7 +181,7 @@ Represents the students in the system, can be registered to multiple teacher ent
 
 - email: the primary key that uniquely identifies a student
 - suspended: a boolean value indicating if a student is suspended or not
-- teachers: a list of teacher entities the student is registered to
+- teachers: a relation field representing a list of teacher entities the student is registered to
 
 #### The TeacherStudent Model
 
@@ -171,7 +190,7 @@ Facilitate the many-to-many relationship between the Teacher and Student entitie
 - teacherEmail: a foreign key referencing a row in the Teacher table
 - studentEmail: a foreign key referencing a row in the Student table
 
-Both foreign keys creates a composite primary key that uniquely identifies a relationship in the table. NestJS, using TypeORM, automatically manages and maintain the the table and the relationship between the Student and Teacher tables.
+Both foreign keys creates a composite primary key that uniquely identifies a relationship in the table. TypeORM automatically manages and maintains the table and the relationship between the Student and Teacher tables.
 
 ### Design Choices
 
@@ -181,6 +200,7 @@ The API endpoints are separated into 2 controllers, driven by several considerat
 
    - **TeacherController**: Manages teacher-specific actions like registering students, retrieving common students among teachers, and other potential actions that directly updates the Teacher table.
    - **StudentController**: Handles student-specific operations such as suspending students that directly updates the Student table.
+   - This design also closely models real world applications when there are more endpoints with multiple modules.
 
 2. **Scalability**:
 
