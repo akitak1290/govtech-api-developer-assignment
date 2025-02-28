@@ -1,7 +1,6 @@
 import { Repository, DataSource } from 'typeorm';
 
 import { Teacher } from './teacher.entity';
-import { GetTeacherByEmailDto } from './dto/get-teacher-by-email.dto';
 import {
   Injectable,
   InternalServerErrorException,
@@ -15,10 +14,7 @@ export class TeacherRepository extends Repository<Teacher> {
     super(Teacher, dataSource.createEntityManager());
   }
 
-  async getTeacher(
-    getTeacherByEmailDTo: GetTeacherByEmailDto,
-  ): Promise<Teacher> {
-    const { teacher: teacherEmail } = getTeacherByEmailDTo;
+  async getTeacher(teacherEmail: string): Promise<Teacher> {
     const teacher = await this.findOne({ where: { email: teacherEmail } });
 
     if (!teacher) {

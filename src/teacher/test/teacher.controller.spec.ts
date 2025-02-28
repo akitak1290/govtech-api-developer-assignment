@@ -5,7 +5,6 @@ import * as request from 'supertest';
 import { TeacherController } from '../teacher.controller';
 import { TeacherService } from '../teacher.service';
 import {
-  AllExceptionsFilter,
   GlobalExceptionFilter,
 } from 'src/common/filters/globalExceptionFilter';
 import { HttpAdapterHost } from '@nestjs/core';
@@ -31,9 +30,6 @@ describe(TeacherController, () => {
     app.useGlobalPipes(
       new ValidationPipe({ whitelist: true, transform: true }),
     );
-
-    const httpAdapter = app.get(HttpAdapterHost);
-    app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
     app.useGlobalFilters(new GlobalExceptionFilter());
 

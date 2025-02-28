@@ -1,4 +1,11 @@
-import { Controller, Body, HttpCode, Post, Logger } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  HttpCode,
+  Post,
+  Logger,
+  HttpStatus,
+} from '@nestjs/common';
 import { SuspendStudentDto } from './dto/suspend-student.dto';
 import { StudentService } from './student.service';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
@@ -10,20 +17,20 @@ export class StudentController {
     this.logger = new Logger(StudentController.name);
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('/suspend')
   @ApiOperation({ summary: 'Suspend a student by email' })
   @ApiBody({ type: SuspendStudentDto })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Student suspended',
   })
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description: 'Bad Request Exception - Validation Error',
   })
   @ApiResponse({
-    status: 404,
+    status: HttpStatus.NOT_FOUND,
     description:
       'Student Not Found Exception - Student with provided email not found',
   })

@@ -34,29 +34,3 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     });
   }
 }
-
-@Catch()
-export class AllExceptionsFilter implements ExceptionFilter {
-  private readonly logger: Logger;
-
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {
-    this.logger = new Logger(AllExceptionsFilter.name);
-  }
-
-  catch(exception: any, host: ArgumentsHost) {
-    const { httpAdapter } = this.httpAdapterHost;
-
-    const ctx = host.switchToHttp();
-
-    // follows nestjs's default return code: 500 - internal server error
-    const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
-    const message = exception ? exception.message : 'Internal server error';
-
-    this.logger.error(`Unhandled exception: ${message}`);
-    
-    httpAdapter.reply(ctx.getResponse(), { statusCode: HttpStatus }, status);
-  }
-}

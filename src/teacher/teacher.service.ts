@@ -26,9 +26,8 @@ export class TeacherService {
     const { teacher: teacherEmail, students: studentEmails } =
       registerStudentsDto;
 
-    const teacher: Teacher = await this.teacherRepository.getTeacher({
-      teacher: teacherEmail,
-    });
+    const teacher: Teacher =
+      await this.teacherRepository.getTeacher(teacherEmail);
     const students: Student[] = await this.studentService.getStudentsByEmails({
       students: studentEmails,
     });
@@ -55,9 +54,7 @@ export class TeacherService {
     const { teacher: teacherEmail, notification } = retrieveForNotificationsDto;
 
     // 1. get from teacher's registration list
-    const teacher = await this.teacherRepository.getTeacher({
-      teacher: teacherEmail,
-    });
+    const teacher = await this.teacherRepository.getTeacher(teacherEmail);
     const studentEmails = teacher.students
       .filter((student) => !student.suspended)
       .map((student) => student.email);

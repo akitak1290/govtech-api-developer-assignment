@@ -146,6 +146,8 @@ docker-compose down -v
 
 Similarly, open another interactive shell session inside the api server container and execute the test runner
 
+![test coverage](./docs/test_coverage.png)
+
 ```bash
 docker exec -it api_server npm run test
 ```

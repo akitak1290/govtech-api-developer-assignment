@@ -76,6 +76,12 @@
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/$1"
     },
-    "modulePathIgnorePatterns": ["<rootDir>/config/", "<rootDir>/types/"]
+    "modulePathIgnorePatterns": [
+      "<rootDir>/config/",
+      "<rootDir>/types/",
+      "<rootDir>/migrations/",
+      "<rootDir>/.*\\.module\\.ts$",
+      "<rootDir>/main.ts"
+    ]
   }
 }

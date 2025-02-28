@@ -96,7 +96,7 @@ describe(TeacherService, () => {
     });
   });
 
-  describe('retrieveForNotifications', () => {
+  describe('retrieveForNotifications()', () => {
     it('should throw an exception if the teacher is not found', () => {
       const teacherEmail = 'nonexistence@gmail.com';
       const retrieveForNotificationsDto: RetrieveForNotificationsDto = {

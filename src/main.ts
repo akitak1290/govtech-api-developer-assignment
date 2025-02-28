@@ -4,7 +4,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
 
 import {
-  AllExceptionsFilter,
   GlobalExceptionFilter,
 } from './common/filters/globalExceptionFilter';
 
@@ -20,8 +19,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   // SETUP Filters
-  const httpAdapter = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   // SETUP Logger

@@ -6,7 +6,7 @@ import {
   Get,
   Query,
   Logger,
-  ParseArrayPipe,
+  HttpStatus, 
 } from '@nestjs/common';
 
 import { RegisterStudentsDto } from './dto/register-students.dto';
@@ -28,21 +28,21 @@ export class TeacherController {
     this.logger = new Logger(TeacherController.name);
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('/register')
   @ApiOperation({ summary: 'Register students for a teacher using email' })
   @ApiBody({ type: RegisterStudentsDto })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Students registered to teacher',
   })
   @ApiResponse({
-    status: 404,
+    status: HttpStatus.NOT_FOUND,
     description:
       'Not Found Exception - Teacher or Students not found with provided email',
   })
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description:
       'Bad Request Exception - Invalid Teacher or Students found with provided email',
   })
@@ -55,7 +55,7 @@ export class TeacherController {
     return this.teacherService.registerStudents(registerStudentDto);
   }
 
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Get('/commonstudents')
   @ApiOperation({ summary: 'Get common students registered to teachers' })
   @ApiQuery({
@@ -69,16 +69,16 @@ export class TeacherController {
   })
   @ApiExtraModels(GetCommonStudentsDto)
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Found students',
   })
   @ApiResponse({
-    status: 404,
+    status: HttpStatus.NOT_FOUND,
     description:
       'Not Found Exception - One or more Teachers not found with provided emails',
   })
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description:
       'Bad Request Exception - Invalid one or more Teachers found with provided email',
   })
@@ -91,20 +91,20 @@ export class TeacherController {
     return this.teacherService.getCommonStudents(getCommonStudentsDto);
   }
 
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Post('/retrievefornotifications')
   @ApiOperation({ summary: 'Get students for notification' })
   @ApiBody({ type: RetrieveForNotificationsDto })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Found students',
   })
   @ApiResponse({
-    status: 404,
+    status: HttpStatus.NOT_FOUND,
     description: 'Not Found Exception - Teacher not found with provided email',
   })
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description:
       'Bad Request Exception - Invalid Teacher or Notification found with provided body',
   })
