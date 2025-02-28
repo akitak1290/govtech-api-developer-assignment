@@ -69,6 +69,6 @@ export class TeacherService {
       `Method ${this.retrieveForNotifications.name}: got ${JSON.stringify(studentEmails)} students registered to teacher ${teacher.email} and ${JSON.stringify(extractedEmails)} from message: ${notification}`,
     );
 
-    return { recipients: studentEmails };
+    return { recipients: [...new Set(studentEmails)] };
   }
 }
