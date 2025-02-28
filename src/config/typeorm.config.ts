@@ -42,7 +42,6 @@ export class TypeOrmCustomLogger implements TypeOrmLogger {
 
   log(level: 'log' | 'info' | 'warn', message: any, queryRunner?: QueryRunner) {
     if (level === 'log') {
-      // When needed, consider changing to 'log' level
       this.logger.debug(message);
     } else if (level === 'info') {
       this.logger.debug(message);

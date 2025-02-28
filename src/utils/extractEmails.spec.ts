@@ -1,4 +1,3 @@
-// extractEmails.test.js
 import { extractEmails } from './extractEmails';
 
 describe('extractEmails', () => {

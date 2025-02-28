@@ -10,9 +10,9 @@ import { Student } from 'src/student/student.entity';
 import { RetrieveForNotificationsDto } from '../dto/retrieve-for-notifications.dto';
 
 /*
-* !methods from external modules (typeORM) or external services (StudentService)
-* are mocked to test methods from TeacherService
-*/
+ * !methods from external modules (typeORM) or external services (StudentService)
+ * are mocked to test methods from TeacherService
+ */
 
 describe(TeacherService, () => {
   let service: TeacherService;
@@ -24,9 +24,8 @@ describe(TeacherService, () => {
       providers: [
         TeacherService,
         TeacherRepository,
-        // !IMPORTANT: setup mock DataSource for TeacherRepository
         {
-          provide: DataSource, // Mock the DataSource
+          provide: DataSource,
           useValue: {
             getRepository: jest.fn(),
             createEntityManager: jest.fn(),
@@ -92,7 +91,6 @@ describe(TeacherService, () => {
   });
 
   describe('getCommonStudents()', () => {
-    // simple test as the main logic is from student service instead
     it('should resolves successfully', () => {
       expect(service.getCommonStudents({ teacher: [] })).resolves;
     });
@@ -129,6 +127,31 @@ describe(TeacherService, () => {
         email: teacherEmail,
         students: [mockStudent],
       } as Teacher;
+      jest.spyOn(teacherRepository, 'findOne').mockResolvedValue(mockTeacher);
+
+      expect(
+        service.retrieveForNotifications(retrieveForNotificationsDto),
+      ).resolves.toEqual({
+        recipients: [studentEmail1, studentEmail2],
+      });
+    });
+
+    it('should not contain duplicated emails', () => {
+      const teacherEmail = 'validteacheremail@gmail.com';
+      const studentEmail1 = 'validstudentemail@gmail.com';
+      const studentEmail2 = 'validstudentemail2@gmail.com';
+
+      const retrieveForNotificationsDto: RetrieveForNotificationsDto = {
+        teacher: teacherEmail,
+        notification: `You are late @${studentEmail2} `,
+      };
+      const mockStudent1 = { email: studentEmail1, suspended: false } as Student;
+      const mockStudent2 = { email: studentEmail2, suspended: false } as Student;
+      const mockTeacher = {
+        email: teacherEmail,
+        students: [mockStudent1, mockStudent2],
+      } as Teacher;
+
       jest.spyOn(teacherRepository, 'findOne').mockResolvedValue(mockTeacher);
 
       expect(

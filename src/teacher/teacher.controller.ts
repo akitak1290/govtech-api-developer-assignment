@@ -13,7 +13,13 @@ import { RegisterStudentsDto } from './dto/register-students.dto';
 import { TeacherService } from './teacher.service';
 import { RetrieveForNotificationsDto } from './dto/retrieve-for-notifications.dto';
 import { GetCommonStudentsDto } from './dto/get-common-students.dto';
-import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiExtraModels,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 @Controller()
 export class TeacherController {
@@ -57,9 +63,11 @@ export class TeacherController {
     type: String,
     required: true,
     isArray: true,
-    description: 'Email(s) of teacher(s) to find common students for. Pass multiple values as separate query parameters (e.g., ?teacher=a@b.com&teacher=c@d.com).',
-    example: ["teacherken@gmail.com", "teacherzoe@gmail.com"]
+    description:
+      'Email(s) of teacher(s) to find common students for. Pass multiple values as separate query parameters (e.g., ?teacher=a@b.com&teacher=c@d.com).',
+    example: ['teacherken@gmail.com', 'teacherzoe@gmail.com'],
   })
+  @ApiExtraModels(GetCommonStudentsDto)
   @ApiResponse({
     status: 200,
     description: 'Found students',

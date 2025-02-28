@@ -7,7 +7,7 @@ export class Teacher {
   email: string;
 
   @ManyToMany(() => Student, (student: Student) => student.teachers, {
-    eager: true, // https://orkhan.gitbook.io/typeorm/docs/eager-and-lazy-relations
+    eager: true,
   })
   @JoinTable({
     name: 'TeacherStudent',

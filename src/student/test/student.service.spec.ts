@@ -21,7 +21,7 @@ describe(StudentService, () => {
         StudentService,
         StudentRepository,
         {
-          provide: DataSource, // Mock the DataSource
+          provide: DataSource,
           useValue: {
             getRepository: jest.fn(),
             createEntityManager: jest.fn(),
@@ -30,7 +30,6 @@ describe(StudentService, () => {
         {
           provide: getRepositoryToken(Student),
           useValue: {
-            // Mocking the StudentRepository methods
             createQueryBuilder: jest.fn().mockReturnThis(),
             leftJoin: jest.fn().mockReturnThis(),
             select: jest.fn().mockReturnThis(),

@@ -6,7 +6,6 @@ export class GetCommonStudentsDto {
   @IsArray()
   @ArrayMinSize(1)
   @IsEmail({}, { each: true })
-  // parse string to [string]
   @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
   @ApiProperty({
     example: '["teacherken@gmail.com", "teacherzoe@gmail.com"]',
